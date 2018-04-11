@@ -1,23 +1,22 @@
 section .data
-	msg	db "Hello World!",`\n`
+	msg	db 'Hello World!',`\n` ; Hello world message
+	len equ $ - msg            ; Length of message
 
 section .text
-	global	_start
+	global	_start ; declared for the linker
 
 _start:
-	;; write syscall
-	mov	rax, 1
-	;; file descriptor, standard output
-	mov	rdi, 1
-	;; message address
-	mov	rsi, msg
-	;; length of message
-	mov	rdx, 14
-	;; call write syscall
-	syscall
+	;----------------------------------------------
+	mov	rax, 1   ; System call number (sys_write)
+	mov	rdi, 1   ; File descriptor (stdout)
+	mov	rsi, msg ; Message address
+	mov	rdx, len ; Message length
 
-	;; exit
-	mov	rax, 60
-	mov	rdi, 0
+	syscall      ; Call kernel
 
-	syscall
+	;----------------------------------------------
+	mov	rax, 60  ; System call number (sys_exit)
+	mov	rdi, 0   ; Error number
+
+	syscall      ; Call kernel
+
